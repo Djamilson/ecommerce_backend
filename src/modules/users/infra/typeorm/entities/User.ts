@@ -4,8 +4,11 @@ import {
   Column,
   PrimaryGeneratedColumn,
   CreateDateColumn,
+  OneToMany,
   UpdateDateColumn,
 } from 'typeorm';
+
+import GroupsUsers from '@modules/users/infra/typeorm/entities/GroupsUsers';
 
 import uploadConfig from '@config/upload';
 
@@ -19,6 +22,11 @@ class User {
 
   @Column()
   email: string;
+
+  @OneToMany(() => GroupsUsers, group_users => group_users.user, {
+    cascade: true,
+  })
+  group_users: GroupsUsers[];
 
   @Column()
   @Exclude()
