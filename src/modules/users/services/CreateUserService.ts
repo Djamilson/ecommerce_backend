@@ -1,6 +1,8 @@
 import { injectable, inject } from 'tsyringe';
 
-import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
+import IGroupsRepository from '@modules/users/repositories/IGroupsRepository';
+
+// import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
 import AppError from '@shared/errors/AppError';
 
 import User from '../infra/typeorm/entities/User';
@@ -11,7 +13,15 @@ interface IRequest {
   name: string;
   email: string;
   password: string;
+  groups: Array<{
+    id: string;
+  }>;
 }
+
+interface IGroupRequest {
+  id: string;
+}
+
 @injectable()
 class CreateUserService {
   constructor(
@@ -21,16 +31,29 @@ class CreateUserService {
     @inject('HashProvider')
     private hashProvider: IHashProvider,
 
-    @inject('CacheProvider')
-    private cacheProvider: ICacheProvider,
+    @inject('GroupsRepository')
+    private groupsRepository: IGroupsRepository,
   ) {}
 
-  public async execute({ name, email, password }: IRequest): Promise<User> {
+  public async execute({
+    name,
+    email,
+    password,
+    groups,
+  }: IRequest): Promise<User> {
     const checkUserExists = await this.usersRepository.findByEmail(email);
 
     if (checkUserExists) {
       throw new AppError('Email address already used.');
     }
+
+    const existentGroups = await this.groupsRepository.findAllById(groups);
+
+    if (!existentGroups.length) {
+      throw new AppError('Could not find group with the ids');
+    }
+
+    const groupExistsIds = existentGroups.map(group => group.id);
 
     const hashedPassword = await this.hashProvider.generateHash(password);
 
@@ -38,9 +61,8 @@ class CreateUserService {
       name,
       email,
       password: hashedPassword,
+      groups: groupExistsIds,
     });
-
-    await this.cacheProvider.invalidatePrefix('providers-list');
 
     return user;
   }

@@ -1,7 +1,6 @@
 import { inject, injectable } from 'tsyringe';
 
 import IProductsRepository from '@modules/products/repositories/IProductsRepository';
-import IStocksRepository from '@modules/products/repositories/IStocksRepository';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 
 import AppError from '@shared/errors/AppError';
@@ -9,19 +8,14 @@ import AppError from '@shared/errors/AppError';
 import Order from '../infra/typeorm/entities/Order';
 import IOrdersRepository from '../repositories/IOrdersRepository';
 
-interface IStock {
+interface IOrderProduct {
   id: string;
-  amount: number;
-}
-
-interface IProduct {
-  id: string;
-  stock: IStock;
+  quantity: number;
 }
 
 interface IRequest {
   user_id: string;
-  products: IProduct[];
+  products: IOrderProduct[];
 }
 
 @injectable()
@@ -33,16 +27,14 @@ class CreateOrderService {
     @inject('ProductsRepository')
     private productsRepository: IProductsRepository,
 
-    @inject('StocksRepository')
-    private stocksRepository: IStocksRepository,
-
     @inject('UsersRepository')
     private usersRepository: IUsersRepository,
   ) {}
 
   public async execute({ user_id, products }: IRequest): Promise<Order> {
+    console.log('1');
     const userExists = await this.usersRepository.findById(user_id);
-
+    console.log('12');
     if (!userExists) {
       throw new AppError('There not find any user with the givan id');
     }
@@ -66,39 +58,51 @@ class CreateOrderService {
       );
     }
 
+    console.log('cheguei no 6');
+
     const findProductsWithNoQuantity = products.filter(
       product =>
-        existentProducts.filter(p => p.id === product.id)[0].stock.amount <
-        product.stock.amount,
+        existentProducts.filter(p => p.id === product.id)[0].stock <
+        product.quantity,
     );
 
+    console.log('cheguei no 7');
     if (findProductsWithNoQuantity.length) {
       throw new AppError(
-        `The quantity ${findProductsWithNoQuantity[0].stock.amount} is not available for ${findProductsWithNoQuantity[0].id} `,
+        `The quantity ${findProductsWithNoQuantity[0].quantity} is not available for ${findProductsWithNoQuantity[0].id} `,
       );
     }
 
-    const serializadProducts = products.map(product => ({
-      product_id: product.id,
-      quantity: product.stock.amount,
-      price: existentProducts.filter(p => p.id === product.id)[0].price,
-    }));
+    console.log('meu product:::', existentProducts);
+
+    const serializadProducts = products.map(order_product => {
+      console.log('meu order_product:::', order_product);
+      return {
+        product_id: order_product.id,
+        quantity: order_product.quantity,
+        price: existentProducts.filter(p => p.id === order_product.id)[0].price,
+      };
+    });
+
+    console.log('cheguei no 7 serializadProducts', serializadProducts);
 
     const order = await this.ordersRepository.create({
       user: userExists,
       products: serializadProducts,
     });
 
+    console.log('cheguei no 116');
+
     const { order_products } = order;
 
     const orderedProductsQuantity = order_products.map(product => ({
-      id: product.product.stock.id,
-      amount:
-        existentProducts.filter(p => p.id === product.product_id)[0].stock
-          .amount - product.quantity,
+      id: product.product_id,
+      stock:
+        existentProducts.filter(p => p.id === product.product_id)[0].stock -
+        product.quantity,
     }));
 
-    await this.stocksRepository.updateQuantity(orderedProductsQuantity);
+    await this.productsRepository.updateQuantity(orderedProductsQuantity);
 
     return order;
   }
