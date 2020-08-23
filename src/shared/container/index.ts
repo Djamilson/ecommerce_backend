@@ -5,12 +5,14 @@ import './providers';
 
 import NotificationsRepository from '@modules/notifications/infra/typeorm/repositories/NotificationsRepository';
 import INotificationsRepository from '@modules/notifications/repositories/INotificationsRepository';
+import OrdersRepository from '@modules/orders/infra/typeorm/repositories/OrdersRepository';
+import IOrdersRepository from '@modules/orders/repositories/IOrdersRepository';
 import ProductsRepository from '@modules/products/infra/typeorm/repositories/ProductsRepository';
-import StocksRepository from '@modules/products/infra/typeorm/repositories/StocksRepository';
 import IProductsRepository from '@modules/products/repositories/IProductsRepository';
-import IStocksRepository from '@modules/products/repositories/IStocksRepository';
+import GroupsRepository from '@modules/users/infra/typeorm/repositories/GroupsRepository';
 import UsersRepository from '@modules/users/infra/typeorm/repositories/UsersRepository';
 import UserTokensRepository from '@modules/users/infra/typeorm/repositories/UserTokensRepository';
+import IGroupsRepository from '@modules/users/repositories/IGroupsRepository';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import IUserTokensRepository from '@modules/users/repositories/IUserTokensRepository';
 
@@ -24,14 +26,19 @@ container.registerSingleton<IUserTokensRepository>(
   UserTokensRepository,
 );
 
+container.registerSingleton<IOrdersRepository>(
+  'OrdersRepository',
+  OrdersRepository,
+);
+
+container.registerSingleton<IGroupsRepository>(
+  'GroupsRepository',
+  GroupsRepository,
+);
+
 container.registerSingleton<IProductsRepository>(
   'ProductsRepository',
   ProductsRepository,
-);
-
-container.registerSingleton<IStocksRepository>(
-  'StocksRepository',
-  StocksRepository,
 );
 
 container.registerSingleton<INotificationsRepository>(

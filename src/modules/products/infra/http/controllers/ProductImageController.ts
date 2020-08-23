@@ -8,7 +8,7 @@ export default class ProductImageController {
   public async update(req: Request, res: Response): Promise<Response> {
     const updateProductImage = container.resolve(UpdateProductImageService);
 
-    console.log('Dados da Image:', req.user.id, req.file.filename);
+   // console.log('Dados da Image:', req.user.id, req.file.filename);
 
     const user = await updateProductImage.execute({
       product_id: req.user.id,

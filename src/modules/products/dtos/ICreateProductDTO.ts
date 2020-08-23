@@ -1,5 +1,6 @@
 export default interface ICreateProductDTO {
-  title: string;
+  name: string;
   price: number;
   image: string;
+  stock: number;
 }

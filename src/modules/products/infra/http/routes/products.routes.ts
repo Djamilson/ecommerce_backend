@@ -19,10 +19,10 @@ productsRouter.post(
   '/',
   celebrate({
     [Segments.BODY]: {
-      title: Joi.string().required(),
+      name: Joi.string().required(),
       price: Joi.number().required(),
       image: Joi.string().required(),
-      amount: Joi.number().required(),
+      stock: Joi.number().required(),
     },
   }),
   productsController.create,

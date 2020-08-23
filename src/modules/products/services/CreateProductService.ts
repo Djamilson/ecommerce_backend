@@ -6,9 +6,10 @@ import Product from '../infra/typeorm/entities/Product';
 import IProductsRepository from '../repositories/IProductsRepository';
 
 interface IRequest {
-  title: string;
+  name: string;
   price: number;
   image: string;
+  stock: number;
 }
 
 @injectable()
@@ -18,17 +19,23 @@ class CreateProductService {
     private productsRepository: IProductsRepository,
   ) {}
 
-  public async execute({ title, price, image }: IRequest): Promise<Product> {
-    const productExists = await this.productsRepository.findByTitle(title);
+  public async execute({
+    name,
+    price,
+    image,
+    stock,
+  }: IRequest): Promise<Product> {
+    const productExists = await this.productsRepository.findByName(name);
 
     if (productExists) {
       throw new AppError('There is already one product with this name');
     }
 
     const product = this.productsRepository.create({
-      title,
+      name,
       image,
       price,
+      stock,
     });
 
     return product;

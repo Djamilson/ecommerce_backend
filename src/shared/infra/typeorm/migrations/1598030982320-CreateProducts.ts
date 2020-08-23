@@ -24,6 +24,10 @@ export default class CreateProducts1598030982320 implements MigrationInterface {
             scale: 2,
           },
           {
+            name: 'stock',
+            type: 'int',
+          },
+          {
             name: 'created_at',
             type: 'timestamp',
             default: 'now()',
@@ -39,6 +43,6 @@ export default class CreateProducts1598030982320 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('stocks');
+    await queryRunner.dropTable('products');
   }
 }
