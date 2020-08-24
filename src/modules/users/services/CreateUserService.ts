@@ -29,9 +29,6 @@ class CreateUserService {
     @inject('UsersRepository')
     private usersRepository: IUsersRepository,
 
-    @inject('UsersGroupsRepository')
-    private usersGroupsRepository: IUsersGroupsRepository,
-
     @inject('HashProvider')
     private hashProvider: IHashProvider,
 
@@ -63,15 +60,12 @@ class CreateUserService {
 
     const hashedPassword = await this.hashProvider.generateHash(password);
 
-    console.log('inicio ===>>');
     const user = this.usersRepository.create({
       name,
       email,
       password: hashedPassword,
       user_groups: groupExistsIds,
     });
-
-    // criar relacionamento
 
     return user;
   }
