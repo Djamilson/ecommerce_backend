@@ -14,7 +14,10 @@ class UsersRepository implements IUsersRepository {
   }
 
   public async findById(id: string): Promise<User | undefined> {
-    const user = await this.ormRepository.findOne(id);
+    const user = this.ormRepository.findOne(id, {
+      relations: ['user_groups', 'user'],
+    });
+
     return user;
   }
 
@@ -44,10 +47,14 @@ class UsersRepository implements IUsersRepository {
     return users;
   }
 
-  public async create(userData: ICreateUserDTO): Promise<User> {
-    const user = this.ormRepository.create(userData);
-    await this.ormRepository.save(user);
-    return user;
+  public async create(user: ICreateUserDTO): Promise<User> {
+    console.log('pasou 1=', user);
+
+    const newUser = this.ormRepository.create(user);
+
+    await this.ormRepository.save(newUser);
+
+    return newUser;
   }
 
   public async save(user: User): Promise<User> {

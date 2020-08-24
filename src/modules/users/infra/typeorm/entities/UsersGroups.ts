@@ -11,12 +11,12 @@ import {
 import Group from '@modules/users/infra/typeorm/entities/Group';
 import User from '@modules/users/infra/typeorm/entities/User';
 
-@Entity('orders_products')
-class OrdersProducts {
+@Entity('users_groups')
+class UsersGroups {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => User, user => user.group_users)
+  @ManyToOne(() => User, user => user.user_groups)
   @JoinColumn({ name: 'user_id' })
   user: User;
 
@@ -37,4 +37,4 @@ class OrdersProducts {
   updated_at: Date;
 }
 
-export default OrdersProducts;
+export default UsersGroups;

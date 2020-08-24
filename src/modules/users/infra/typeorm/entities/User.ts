@@ -8,7 +8,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-import GroupsUsers from '@modules/users/infra/typeorm/entities/GroupsUsers';
+import UsersGroups from '@modules/users/infra/typeorm/entities/UsersGroups';
 
 import uploadConfig from '@config/upload';
 
@@ -23,10 +23,11 @@ class User {
   @Column()
   email: string;
 
-  @OneToMany(() => GroupsUsers, group_users => group_users.user, {
+  @OneToMany(() => UsersGroups, user_groups => user_groups.user, {
+    eager: true,
     cascade: true,
   })
-  group_users: GroupsUsers[];
+  user_groups: UsersGroups[];
 
   @Column()
   @Exclude()

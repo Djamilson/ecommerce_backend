@@ -7,6 +7,7 @@ import AppError from '@shared/errors/AppError';
 
 import User from '../infra/typeorm/entities/User';
 import IHashProvider from '../providers/HashProvider/models/IHashProvider';
+import IUsersGroupsRepository from '../repositories/IUsersGroupsRepository';
 import IUsersRepository from '../repositories/IUsersRepository';
 
 interface IRequest {
@@ -27,6 +28,9 @@ class CreateUserService {
   constructor(
     @inject('UsersRepository')
     private usersRepository: IUsersRepository,
+
+    @inject('UsersGroupsRepository')
+    private usersGroupsRepository: IUsersGroupsRepository,
 
     @inject('HashProvider')
     private hashProvider: IHashProvider,
@@ -53,16 +57,21 @@ class CreateUserService {
       throw new AppError('Could not find group with the ids');
     }
 
-    const groupExistsIds = existentGroups.map(group => group.id);
+    const groupExistsIds = existentGroups.map(group => {
+      return { group };
+    });
 
     const hashedPassword = await this.hashProvider.generateHash(password);
 
+    console.log('inicio ===>>');
     const user = this.usersRepository.create({
       name,
       email,
       password: hashedPassword,
-      groups: groupExistsIds,
+      user_groups: groupExistsIds,
     });
+
+    // criar relacionamento
 
     return user;
   }

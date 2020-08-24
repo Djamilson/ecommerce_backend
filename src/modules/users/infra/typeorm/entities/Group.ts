@@ -7,15 +7,15 @@ import {
   Column,
 } from 'typeorm';
 
-import GroupsUsers from '@modules/users/infra/typeorm/entities/GroupsUsers';
+import UsersGroups from '@modules/users/infra/typeorm/entities/UsersGroups';
 
 @Entity('groups')
 class Group {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @OneToMany(() => GroupsUsers, group_groups => group_groups.group)
-  group_groups: GroupsUsers[];
+  @OneToMany(() => UsersGroups, group_groups => group_groups.group)
+  group_groups: UsersGroups[];
 
   @Column()
   name: string;
