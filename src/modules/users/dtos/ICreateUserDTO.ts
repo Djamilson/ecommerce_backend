@@ -4,9 +4,14 @@ interface IGroup {
   group: Group;
 }
 
-export default interface ICreateUserDTO {
+interface IPerson {
   name: string;
   email: string;
+  status: boolean;
+}
+
+export default interface ICreateUserDTO {
+  person: IPerson;
   password: string;
   user_groups: IGroup[];
 }

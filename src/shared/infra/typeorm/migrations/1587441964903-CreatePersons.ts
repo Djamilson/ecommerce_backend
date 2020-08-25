@@ -22,6 +22,16 @@ export default class CreatePersons1587441964903 implements MigrationInterface {
             type: 'varchar',
             isUnique: true,
           },
+          {
+            name: 'status',
+            type: 'boolean',
+            default: true,
+          },
+          {
+            name: 'privacy',
+            type: 'boolean',
+            default: false,
+          },
 
           {
             name: 'created_at',

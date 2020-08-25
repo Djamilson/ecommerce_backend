@@ -16,6 +16,7 @@ export default class CreateStates1598361537410 implements MigrationInterface {
           {
             name: 'name',
             type: 'varchar',
+            isUnique: true,
           },
           {
             name: 'acronym',

@@ -6,6 +6,5 @@ interface ICreateUserGroupsDTO {
 }
 
 export default interface IUsersGroupsRepository {
-  create(data: ICreateUserGroupsDTO): Promise<User>;
-  save(group: ICreateUserGroupsDTO): Promise<ICreateUserGroupsDTO>;
+  findById(id: string): Promise<User | undefined>;
 }

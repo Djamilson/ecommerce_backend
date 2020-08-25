@@ -1,3 +1,5 @@
+import { Exclude } from 'class-transformer';
+
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -31,9 +33,11 @@ class UsersGroups {
   user_id: string;
 
   @CreateDateColumn()
+  @Exclude()
   created_at: Date;
 
   @UpdateDateColumn()
+  @Exclude()
   updated_at: Date;
 }
 

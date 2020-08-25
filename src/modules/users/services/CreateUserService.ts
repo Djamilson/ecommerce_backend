@@ -7,7 +7,6 @@ import AppError from '@shared/errors/AppError';
 
 import User from '../infra/typeorm/entities/User';
 import IHashProvider from '../providers/HashProvider/models/IHashProvider';
-import IUsersGroupsRepository from '../repositories/IUsersGroupsRepository';
 import IUsersRepository from '../repositories/IUsersRepository';
 
 interface IRequest {
@@ -60,9 +59,14 @@ class CreateUserService {
 
     const hashedPassword = await this.hashProvider.generateHash(password);
 
-    const user = this.usersRepository.create({
+    const personSerealizable = {
       name,
+      status: true,
       email,
+    };
+
+    const user = this.usersRepository.create({
+      person: personSerealizable,
       password: hashedPassword,
       user_groups: groupExistsIds,
     });

@@ -16,10 +16,12 @@ export default class CreateGroups1598361828852 implements MigrationInterface {
           {
             name: 'name',
             type: 'varchar',
+            isUnique: true,
           },
           {
             name: 'description',
             type: 'varchar',
+            isUnique: true,
           },
           {
             name: 'created_at',

@@ -21,7 +21,8 @@ export default class CreateUsers1598362085674 implements MigrationInterface {
 
           {
             name: 'is_verified',
-            type: 'varchar',
+            type: 'boolean',
+            default: false,
           },
 
           {

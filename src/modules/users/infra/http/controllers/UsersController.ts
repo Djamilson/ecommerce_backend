@@ -2,7 +2,6 @@ import { classToClass } from 'class-transformer';
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
-import CreateUserGroupsService from '@modules/users/services/CreateUserGroupsService';
 import CreateUserService from '@modules/users/services/CreateUserService';
 
 export default class UserController {

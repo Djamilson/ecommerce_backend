@@ -1,29 +1,22 @@
 import { getRepository, Repository } from 'typeorm';
 
-import ICreateUserGroupsDTO from '@modules/users/dtos/ICreateUserGroupsDTO';
 import IUsersGroupsRepository from '@modules/users/repositories/IUsersGroupsRepository';
 
-import UsersGroups from '../entities/UsersGroups';
+import User from '../entities/User';
 
 class UsersGroupsRepository implements IUsersGroupsRepository {
-  private ormRepository: Repository<UsersGroups>;
+  private ormRepository: Repository<User>;
 
   constructor() {
-    this.ormRepository = getRepository(UsersGroups);
+    this.ormRepository = getRepository(User);
   }
 
-  public async create({
-    user,
-    group,
-  }: ICreateUserGroupsDTO): Promise<UsersGroups> {
-    const newUserGroups = await this.ormRepository.create({
-      user_id: user.id,
-      group_id: group.id,
+  public async findById(id: string): Promise<User | undefined> {
+    const user = this.ormRepository.findOne(id, {
+      relations: ['users_groups', 'user'],
     });
 
-    await this.ormRepository.save(newUserGroups);
-
-    return newUserGroups;
+    return user;
   }
 }
 
