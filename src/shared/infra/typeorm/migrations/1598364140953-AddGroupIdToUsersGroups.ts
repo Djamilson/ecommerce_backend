@@ -5,33 +5,33 @@ import {
   TableForeignKey,
 } from 'typeorm';
 
-export default class AddCustomerIdToOrders1598033587266
+export default class AddGroupIdToUsersGroups1598364140953
   implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.addColumn(
-      'orders',
+      'users_groups',
       new TableColumn({
-        name: 'user_id',
+        name: 'group_id',
         type: 'uuid',
         isNullable: true,
       }),
     );
 
     await queryRunner.createForeignKey(
-      'orders',
+      'users_groups',
       new TableForeignKey({
-        name: 'OrdersUser',
-        columnNames: ['user_id'],
+        name: 'UsersGroupsGroup',
+        columnNames: ['group_id'],
         referencedColumnNames: ['id'],
-        referencedTableName: 'users',
+        referencedTableName: 'groups',
         onDelete: 'SET NULL',
       }),
     );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropForeignKey('orders', 'OrdersUser');
+    await queryRunner.dropForeignKey('users_groups', 'UsersGroupsGroup');
 
-    await queryRunner.dropColumn('orders', 'user_id');
+    await queryRunner.dropColumn('users_groups', 'group_id');
   }
 }

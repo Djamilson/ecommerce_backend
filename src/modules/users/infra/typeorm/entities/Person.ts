@@ -1,19 +1,16 @@
-import { Exclude, Expose } from 'class-transformer';
+import { Expose } from 'class-transformer';
 import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
   CreateDateColumn,
-  OneToMany,
   UpdateDateColumn,
 } from 'typeorm';
 
-import UsersGroups from '@modules/users/infra/typeorm/entities/UsersGroups';
-
 import uploadConfig from '@config/upload';
 
-@Entity('users')
-class User {
+@Entity('persons')
+class Person {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -23,21 +20,20 @@ class User {
   @Column()
   email: string;
 
-  @OneToMany(() => UsersGroups, user_groups => user_groups.user, {
-    eager: true,
-    cascade: true,
-  })
-  user_groups: UsersGroups[];
+  @Column()
+  status: boolean;
 
   @Column()
-  @Exclude()
-  password: string;
+  privacy: boolean;
 
   @Column()
   avatar: string;
 
   @Column()
-  is_verified: boolean;
+  address_id_man: string;
+
+  @Column()
+  phone_id_man: string;
 
   @CreateDateColumn()
   created_at: Date;
@@ -61,4 +57,4 @@ class User {
   }
 }
 
-export default User;
+export default Person;
