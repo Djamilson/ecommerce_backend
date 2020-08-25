@@ -30,9 +30,9 @@ class AuthenticateUserService {
   ) {}
 
   public async execute({ email, password }: IRequest): Promise<IResponse> {
-
     const user = await this.usersRepository.findByEmail(email);
 
+    console.log('===>>> Meu user: ', user);
     if (!user) {
       throw new AppError('Incorrect email/password combination.', 401);
     }
@@ -42,11 +42,18 @@ class AuthenticateUserService {
       user.password,
     );
 
+    console.log('===>>> passwordMatched: ', passwordMatched);
+
     if (!passwordMatched) {
       throw new AppError('Incorrect email/password combination.', 401);
     }
 
+    const userr = await this.usersRepository.findById(user.id);
+
+    console.log('mejkjkjkj:', userr);
+
     const { secret, expiresIn } = authConfig.jwt;
+
     const token = sign({}, secret, {
       subject: user.id,
       expiresIn,

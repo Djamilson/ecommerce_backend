@@ -4,24 +4,41 @@ import ICreateUserDTO from '@modules/users/dtos/ICreateUserDTO';
 import IFindAllProvidersDTO from '@modules/users/dtos/IFindAllProvidersDTO';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 
+import Person from '../entities/Person';
 import User from '../entities/User';
 
 class UsersRepository implements IUsersRepository {
-  private ormRepository: Repository<User>;
+  private ormUserRepository: Repository<User>;
+
+  private ormPersonRepository: Repository<Person>;
 
   constructor() {
-    this.ormRepository = getRepository(User);
+    this.ormUserRepository = getRepository(User);
+    this.ormPersonRepository = getRepository(Person);
   }
 
   public async findById(id: string): Promise<User | undefined> {
-    const user = await this.ormRepository.findOne(id);
+    const user = this.ormUserRepository.findOne(id, {
+      relations: ['user_groups'],
+    });
+
     return user;
   }
 
   public async findByEmail(email: string): Promise<User | undefined> {
-    const user = await this.ormRepository.findOne({
+    const person = await this.ormPersonRepository.findOne({
       where: { email },
     });
+
+    let user;
+
+    if (person) {
+      user = await this.ormUserRepository.findOne({
+        where: { person_id: person.id },
+      });
+    }
+
+    console.log('Repository::', user);
 
     return user;
   }
@@ -32,26 +49,28 @@ class UsersRepository implements IUsersRepository {
     let users: User[];
 
     if (except_user_id) {
-      users = await this.ormRepository.find({
+      users = await this.ormUserRepository.find({
         where: {
           id: Not(except_user_id),
         },
       });
     } else {
-      users = await this.ormRepository.find();
+      users = await this.ormUserRepository.find();
     }
 
     return users;
   }
 
-  public async create(userData: ICreateUserDTO): Promise<User> {
-    const user = this.ormRepository.create(userData);
-    await this.ormRepository.save(user);
-    return user;
+  public async create(user: ICreateUserDTO): Promise<User> {
+    const newUser = this.ormUserRepository.create(user);
+
+    await this.ormUserRepository.save(newUser);
+
+    return newUser;
   }
 
   public async save(user: User): Promise<User> {
-    return this.ormRepository.save(user);
+    return this.ormUserRepository.save(user);
   }
 }
 

@@ -32,9 +32,10 @@ class CreateOrderService {
   ) {}
 
   public async execute({ user_id, products }: IRequest): Promise<Order> {
-    console.log('1');
+    console.log('1 ini', user_id, products);
     const userExists = await this.usersRepository.findById(user_id);
-    console.log('12');
+    console.log('passou');
+
     if (!userExists) {
       throw new AppError('There not find any user with the givan id');
     }
@@ -84,14 +85,10 @@ class CreateOrderService {
       };
     });
 
-    console.log('cheguei no 7 serializadProducts', serializadProducts);
-
     const order = await this.ordersRepository.create({
       user: userExists,
       products: serializadProducts,
     });
-
-    console.log('cheguei no 116');
 
     const { order_products } = order;
 

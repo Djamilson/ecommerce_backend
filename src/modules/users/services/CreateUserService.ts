@@ -53,15 +53,22 @@ class CreateUserService {
       throw new AppError('Could not find group with the ids');
     }
 
-    const groupExistsIds = existentGroups.map(group => group.id);
+    const groupExistsIds = existentGroups.map(group => {
+      return { group };
+    });
 
     const hashedPassword = await this.hashProvider.generateHash(password);
 
-    const user = this.usersRepository.create({
+    const personSerealizable = {
       name,
+      status: true,
       email,
+    };
+
+    const user = this.usersRepository.create({
+      person: personSerealizable,
       password: hashedPassword,
-      groups: groupExistsIds,
+      user_groups: groupExistsIds,
     });
 
     return user;
