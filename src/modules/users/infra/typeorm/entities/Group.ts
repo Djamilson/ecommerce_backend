@@ -15,8 +15,8 @@ class Group {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @OneToMany(() => UsersGroups, group_groups => group_groups.group)
-  group_groups: UsersGroups[];
+  @OneToMany(() => UsersGroups, user_groups => user_groups.group)
+  user_groups: UsersGroups[];
 
   @Column()
   name: string;

@@ -2,6 +2,10 @@ import ICreateUserDTO from '../dtos/ICreateUserDTO';
 import IFindAllProvidersDTO from '../dtos/IFindAllProvidersDTO';
 import User from '../infra/typeorm/entities/User';
 
+interface IFindGroups {
+  id: string;
+}
+
 export default interface IUsersRepository {
   findAllProviders(data: IFindAllProvidersDTO): Promise<User[]>;
   findById(id: string): Promise<User | undefined>;

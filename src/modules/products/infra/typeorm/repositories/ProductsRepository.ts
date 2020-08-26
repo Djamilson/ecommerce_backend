@@ -42,27 +42,9 @@ class ProductsRepository implements IProductsRepository {
       where: { name },
     });
 
-    console.log('MMMM:>', product);
+    console.log('MMMM:> Product: ', product);
 
     return product;
-  }
-
-  public async findAllProviders({
-    except_product_id,
-  }: IFindAllProvidersDTO): Promise<Product[]> {
-    let products: Product[];
-
-    if (except_product_id) {
-      products = await this.ormRepository.find({
-        where: {
-          id: Not(except_product_id),
-        },
-      });
-    } else {
-      products = await this.ormRepository.find();
-    }
-
-    return products;
   }
 
   public async create(productData: ICreateProductDTO): Promise<Product> {

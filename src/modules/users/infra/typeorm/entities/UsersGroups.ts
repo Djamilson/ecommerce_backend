@@ -1,5 +1,4 @@
 import { Exclude } from 'class-transformer';
-
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -22,7 +21,7 @@ class UsersGroups {
   @JoinColumn({ name: 'user_id' })
   user: User;
 
-  @ManyToOne(() => Group, group => group.group_groups)
+  @ManyToOne(() => Group, group => group.user_groups)
   @JoinColumn({ name: 'group_id' })
   group: Group;
 

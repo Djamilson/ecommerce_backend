@@ -1,3 +1,7 @@
+interface IFindProductIdDTO {
+  id: string;
+}
+
 export default interface IFindAllProvidersDTO {
-  except_product_id?: string;
+  listIDProduct: IFindProductIdDTO[];
 }

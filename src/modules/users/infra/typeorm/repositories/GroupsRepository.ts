@@ -23,6 +23,7 @@ class GroupsRepository implements IGroupsRepository {
       where: {
         id: In(groupIds),
       },
+      select: ['id', 'name', 'description'],
     });
 
     return existsGroups;
