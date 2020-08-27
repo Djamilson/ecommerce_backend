@@ -19,7 +19,7 @@ class UsersRepository implements IUsersRepository {
 
   public async findById(id: string): Promise<User | undefined> {
     const user = this.ormUserRepository.findOne(id, {
-      relations: ['user_groups'],
+      relations: ['person', 'user_groups', 'user_groups.group'],
     });
 
     return user;
@@ -35,10 +35,9 @@ class UsersRepository implements IUsersRepository {
     if (person) {
       user = await this.ormUserRepository.findOne({
         where: { person_id: person.id },
+        relations: ['person'],
       });
     }
-
-    console.log('Repository::', user);
 
     return user;
   }

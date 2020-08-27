@@ -5,6 +5,7 @@ import {
   UpdateDateColumn,
   ManyToOne,
   JoinColumn,
+  Column,
   OneToMany,
 } from 'typeorm';
 
@@ -24,6 +25,9 @@ class Order {
     cascade: true,
   })
   order_products: OrdersProducts[];
+
+  @Column('decimal')
+  total: number;
 
   @CreateDateColumn()
   created_at: Date;

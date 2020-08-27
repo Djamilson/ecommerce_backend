@@ -5,12 +5,13 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
-  OneToMany,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
 
-import OrdersProducts from '@modules/orders/infra/typeorm/entities/OrdersProducts';
-
 import uploadConfig from '@config/upload';
+
+import Section from './Section';
 
 @Entity('products')
 class Product {
@@ -23,8 +24,12 @@ class Product {
   @Column('decimal')
   price: number;
 
-  @OneToMany(() => OrdersProducts, order_products => order_products.product)
-  order_products: OrdersProducts[];
+  @ManyToOne(() => Section)
+  @JoinColumn({ name: 'section_id' })
+  section: Section;
+
+  @Column()
+  section_id: string;
 
   @Column()
   stock: number;

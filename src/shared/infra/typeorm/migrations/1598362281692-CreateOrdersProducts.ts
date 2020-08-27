@@ -20,6 +20,14 @@ export default class CreateOrdersProducts1598362281692
             precision: 10,
             scale: 2,
           },
+
+          {
+            name: 'subtotal',
+            type: 'decimal',
+            precision: 10,
+            scale: 2,
+          },
+
           {
             name: 'quantity',
             type: 'int',

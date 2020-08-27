@@ -8,21 +8,18 @@ import {
   Column,
 } from 'typeorm';
 
-import UsersGroups from '@modules/users/infra/typeorm/entities/UsersGroups';
+import Product from './Product';
 
-@Entity('groups')
-class Group {
+@Entity('sections')
+class Section {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @OneToMany(() => UsersGroups, user_groups => user_groups.group)
-  user_groups: UsersGroups[];
+  @OneToMany(() => Product, product => product.section)
+  products: Product[];
 
   @Column()
   name: string;
-
-  @Column()
-  description: string;
 
   @CreateDateColumn()
   @Exclude()
@@ -33,4 +30,4 @@ class Group {
   updated_at: Date;
 }
 
-export default Group;
+export default Section;

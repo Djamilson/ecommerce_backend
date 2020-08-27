@@ -4,11 +4,11 @@ import { container } from 'tsyringe';
 
 import CreateProductService from '@modules/products/services/CreateProductService';
 
-export default class ProductController {
+export default class ProductsController {
   public async create(req: Request, res: Response): Promise<Response> {
     try {
-      const { name, price, image, stock } = req.body;
-
+      const { name, price, image, stock, section_id } = req.body;
+      console.log('====>>>', section_id);
       const createProduct = container.resolve(CreateProductService);
       // dependencia
 
@@ -17,6 +17,7 @@ export default class ProductController {
         price,
         image,
         stock,
+        section_id,
       });
 
       return res.json(classToClass(product));
