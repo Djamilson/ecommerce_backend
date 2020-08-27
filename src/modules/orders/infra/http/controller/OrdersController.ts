@@ -28,6 +28,8 @@ export default class OrdersController {
       user_id,
       products,
     });
+
+    
     return response.json(customer);
   }
 }

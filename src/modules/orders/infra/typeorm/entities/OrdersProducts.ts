@@ -27,6 +27,9 @@ class OrdersProducts {
   @Column()
   product_id: string;
 
+  @Column('decimal')
+  subtotal: number;
+
   @Column()
   order_id: string;
 
