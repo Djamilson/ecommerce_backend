@@ -1,6 +1,7 @@
-import { getRepository, Repository, In } from 'typeorm';
+import { getRepository, Repository, In, Like } from 'typeorm';
 
 import ICreateProductDTO from '@modules/products/dtos/ICreateProductDTO';
+import IPaginationsDTO from '@modules/products/dtos/IPaginationsDTO';
 import IUpdateProductsQuantityDTO from '@modules/products/dtos/IUpdateStocksQuantityDTO';
 import IProductsRepository from '@modules/products/repositories/IProductsRepository';
 
@@ -29,25 +30,31 @@ class ProductsRepository implements IProductsRepository {
     return existsProducts;
   }
 
+  public async findAll(paginationDTO: IPaginationsDTO): Promise<Product[]> {
+    const keyword = 'a';
+    const products = await this.ormRepository.find({
+      where: { name: Like(`%${keyword}%`) },
+      order: { name: 'DESC' },
+      ...paginationDTO,
+    });
+
+    return products;
+  }
+
   public async findById(id: string): Promise<Product | undefined> {
     const product = await this.ormRepository.findOne(id);
     return product;
   }
 
   public async findByName(name: string): Promise<Product | undefined> {
-    console.log('==>>', name);
     const product = await this.ormRepository.findOne({
       where: { name },
     });
-
-    console.log('==>> product', product);
 
     return product;
   }
 
   public async create(productData: ICreateProductDTO): Promise<Product> {
-    console.log('productData:', productData);
-
     const product = this.ormRepository.create(productData);
     await this.ormRepository.save(product);
 
