@@ -114,7 +114,9 @@ class CreateOrderService {
       };
     });
 
-    const total = products.reduce((totalsum, item) => {
+    const total = serializadProducts.reduce((totalsum, item) => {
+      console.log('estou somando::', totalsum, item);
+
       return totalsum + item.price * item.quantity;
     }, 0);
 

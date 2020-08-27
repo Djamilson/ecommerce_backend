@@ -15,6 +15,8 @@ const productImageController = new ProductImageController();
 
 const upload = multer(uploadConfig.multer);
 
+productsRouter.use(ensureAuthenticated);
+
 productsRouter.post(
   '/',
   celebrate({
@@ -23,6 +25,7 @@ productsRouter.post(
       price: Joi.number().required(),
       image: Joi.string().required(),
       stock: Joi.number().required(),
+      section_id: Joi.string().required(),
     },
   }),
   productsController.create,
@@ -30,7 +33,6 @@ productsRouter.post(
 
 productsRouter.patch(
   '/image',
-  ensureAuthenticated,
   upload.single('file'),
   productImageController.update,
 );

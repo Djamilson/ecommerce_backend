@@ -27,7 +27,7 @@ class OrdersProducts {
   @Column()
   product_id: string;
 
-  @Column('decimal')
+  @Column('decimal', { precision: 10, scale: 2 })
   subtotal: number;
 
   @Column()

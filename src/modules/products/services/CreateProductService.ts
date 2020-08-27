@@ -10,6 +10,7 @@ interface IRequest {
   price: number;
   image: string;
   stock: number;
+  section_id: string;
 }
 
 @injectable()
@@ -24,9 +25,11 @@ class CreateProductService {
     price,
     image,
     stock,
+    section_id,
   }: IRequest): Promise<Product> {
+    console.log('productExists: 1 ');
     const productExists = await this.productsRepository.findByName(name);
-
+    console.log('productExists: 2', productExists);
     if (productExists) {
       throw new AppError('There is already one product with this name');
     }
@@ -36,6 +39,7 @@ class CreateProductService {
       image,
       price,
       stock,
+      section_id,
     });
 
     return product;

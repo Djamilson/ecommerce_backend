@@ -3,4 +3,5 @@ export default interface ICreateProductDTO {
   price: number;
   image: string;
   stock: number;
+  section_id: string;
 }
