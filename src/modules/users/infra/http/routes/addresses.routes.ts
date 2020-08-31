@@ -24,4 +24,6 @@ addressesRouter.post(
   addressesController.create,
 );
 
+addressesRouter.get('/:person_id', addressesController.index);
+
 export default addressesRouter;

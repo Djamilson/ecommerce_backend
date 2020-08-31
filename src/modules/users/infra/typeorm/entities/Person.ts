@@ -24,7 +24,7 @@ class Person {
   rg: string;
 
   @Column()
-  birth_date: Date;
+  birdth_date: Date;
 
   @Column()
   email: string;

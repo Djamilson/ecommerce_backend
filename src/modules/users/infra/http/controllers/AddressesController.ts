@@ -3,15 +3,25 @@ import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
 import CreateAddressService from '@modules/users/services/CreateAddressService';
+import ListAddressesService from '@modules/users/services/ListAddressesService';
 
 export default class AddressesController {
+  public async index(req: Request, res: Response): Promise<Response> {
+    const { person_id } = req.params;
+
+    const listAddresses = container.resolve(ListAddressesService);
+
+    const products = await listAddresses.execute({
+    });
+
+    return res.json(classToClass(products));
+  }
+
   public async create(req: Request, res: Response): Promise<Response> {
     try {
       const user_id = req.user.id;
 
       console.log('person_id:', req.user);
-
-      const person_id = '9989';
 
       const {
         number,
