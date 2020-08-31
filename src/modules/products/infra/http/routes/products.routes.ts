@@ -15,6 +15,9 @@ const productImageController = new ProductImageController();
 
 const upload = multer(uploadConfig.multer);
 
+productsRouter.get('/', productsController.index);
+productsRouter.get('/:id', productsController.show);
+
 productsRouter.use(ensureAuthenticated);
 
 productsRouter.post(

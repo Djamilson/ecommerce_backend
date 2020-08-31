@@ -18,6 +18,15 @@ class Person {
   name: string;
 
   @Column()
+  cpf: string;
+
+  @Column()
+  rg: string;
+
+  @Column()
+  birdth_date: Date;
+
+  @Column()
   email: string;
 
   @Column()

@@ -23,6 +23,21 @@ export default class CreatePersons1587441964903 implements MigrationInterface {
             isUnique: true,
           },
           {
+            name: 'cpf',
+            type: 'varchar',
+            isNullable: true,
+          },
+          {
+            name: 'rg',
+            type: 'varchar',
+            isNullable: true,
+          },
+          {
+            name: 'birdth_date',
+            type: 'timestamp',
+            isNullable: true,
+          },
+          {
             name: 'status',
             type: 'boolean',
             default: true,
