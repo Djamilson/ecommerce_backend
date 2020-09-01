@@ -1,67 +1,34 @@
 import { inject, injectable } from 'tsyringe';
 
-import IAddressesRepository from '../repositories/IAddressesRepository';
-
-interface IState {
-  id: string;
-  name: string;
-}
+import ICitiesRepository from '../repositories/ICitiesRepository';
 
 interface ICity {
-  id: string;
-  name: string;
-  state: IState;
-}
-
-interface IPhone {
-  id: string;
-  prefix: string;
-  number: string;
-}
-
-interface IPerson {
-  id: string;
-  name: string;
-  email: string;
-  status: string;
-  privacy: string;
-  avatar: string;
-  address_id_man: string;
-  phone: IPhone;
-  cpf: string;
-  rg: string;
-  birdth_date: Date;
-}
-
-export interface IAddress {
-  person: IPerson;
-  id: string;
-  number: number;
-  street: string;
-  complement: string;
-  zip_code: string;
-  neighborhood: string;
-  user_id: string;
-  city: ICity;
+  value: string;
+  label: string;
 }
 
 @injectable()
-class ListAddressesService {
+class ListCitiesService {
   constructor(
-    @inject('AddressesRepository')
-    private addressesRepository: IAddressesRepository,
+    @inject('CitiesRepository')
+    private citiesRepository: ICitiesRepository,
   ) {}
 
-  public async execute(person_id: string): Promise<IAddress[] | undefined> {
-    const listAddresses = await this.addressesRepository.findAllAddressesToPerson(
-      person_id,
+  public async execute(state_id: string): Promise<ICity[] | undefined> {
+    console.log('state_id:', state_id);
+    const listCities = await this.citiesRepository.findByCitiesToStateId(
+      state_id,
     );
 
-    console.log('Addresses:::', listAddresses);
+        console.log('listCities:', listCities);
 
-    // if (listAddresses?.length > 0) return listAddresses;
-    return undefined;
+    const options = listCities?.map(city => ({
+      value: city.id,
+      label: city.name,
+    }));
+
+    return options;
   }
 }
 
-export default ListAddressesService;
+export default ListCitiesService;
