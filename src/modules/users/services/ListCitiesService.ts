@@ -15,12 +15,9 @@ class ListCitiesService {
   ) {}
 
   public async execute(state_id: string): Promise<ICity[] | undefined> {
-    console.log('state_id:', state_id);
     const listCities = await this.citiesRepository.findByCitiesToStateId(
       state_id,
     );
-
-        console.log('listCities:', listCities);
 
     const options = listCities?.map(city => ({
       value: city.id,

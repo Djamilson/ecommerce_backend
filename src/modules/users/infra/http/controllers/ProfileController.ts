@@ -23,7 +23,6 @@ export default class ProfileController {
       const user_id = req.user.id;
       const { name, email, old_password, password } = req.body;
 
-      console.log('==>>', name, email, old_password, password);
       const updateProfile = container.resolve(UpdateProfileService);
 
       const user = await updateProfile.execute({

@@ -28,6 +28,9 @@ import IUsersGroupsRepository from '@modules/users/repositories/IUsersGroupsRepo
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import IUserTokensRepository from '@modules/users/repositories/IUserTokensRepository';
 
+import PersonsRepository from '@modules/users/infra/typeorm/repositories/PersonsRepository';
+import IPersonsRepository from '@modules/users/repositories/IUsersRepository';
+
 container.registerSingleton<IUsersRepository>(
   'UsersRepository',
   UsersRepository,
@@ -37,6 +40,12 @@ container.registerSingleton<IAddressesRepository>(
   'AddressesRepository',
   AddressesRepository,
 );
+
+container.registerSingleton<IPersonRepository>(
+  'PersonsRepository',
+  PersonsRepository,
+);
+
 
 container.registerSingleton<IStatesRepository>(
   'StatesRepository',
