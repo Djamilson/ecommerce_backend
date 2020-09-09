@@ -24,6 +24,9 @@ class Person {
   rg: string;
 
   @Column()
+  rgss: string;
+
+  @Column()
   birdth_date: Date;
 
   @Column()

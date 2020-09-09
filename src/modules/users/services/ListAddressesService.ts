@@ -30,6 +30,7 @@ interface IPerson {
   phone: IPhone;
   cpf: string;
   rg: string;
+  rgss: string;
   birdth_date: Date;
 }
 

@@ -33,6 +33,11 @@ export default class CreatePersons1587441964903 implements MigrationInterface {
             isNullable: true,
           },
           {
+            name: 'rgss',
+            type: 'varchar',
+            isNullable: true,
+          },
+          {
             name: 'birdth_date',
             type: 'timestamp',
             isNullable: true,

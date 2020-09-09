@@ -9,9 +9,7 @@ export default class UsersController {
     try {
       const { name, email, password, groups } = req.body;
 
-      console.log('minhas lista:: ', groups);
-
-      console.log('user:: ', name, email, password);
+     
       const createUser = container.resolve(CreateUserService);
       // const createUserGroups = container.resolve(CreateUserGroupsService);
 

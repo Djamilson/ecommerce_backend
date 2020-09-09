@@ -1,7 +1,6 @@
 import { getRepository, Repository, Not } from 'typeorm';
 
 import ICreateUserDTO from '@modules/users/dtos/ICreateUserDTO';
-import IFindAllProvidersDTO from '@modules/users/dtos/IFindAllProvidersDTO';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 
 import Person from '../entities/Person';
@@ -26,10 +25,13 @@ class UsersRepository implements IUsersRepository {
   }
 
   public async findByEmail(email: string): Promise<User | undefined> {
+    console.log('email, password ', email);
     const person = await this.ormPersonRepository.findOne({
       where: { email },
     });
 
+    console.log('email, password ', email);
+     console.log('ppp', person);
     let user;
 
     if (person) {
