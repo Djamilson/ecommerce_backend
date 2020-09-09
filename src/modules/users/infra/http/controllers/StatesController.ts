@@ -6,8 +6,9 @@ import ListStatesService from '@modules/users/services/ListStatesService';
 
 export default class StatesController {
   public async index(req: Request, res: Response): Promise<Response> {
-    const listStates = container.resolve(ListStatesService);
+    console.log('ppp');
 
+    const listStates = container.resolve(ListStatesService);
     const states = await listStates.execute();
 
     return res.json(classToClass(states));
