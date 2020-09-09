@@ -7,12 +7,11 @@ import ListAddressesService from '@modules/users/services/ListAddressesService';
 
 export default class AddressesController {
   public async index(req: Request, res: Response): Promise<Response> {
-    const { person_id } = req.params;
+    //const { person_id } = req.params;
 
     const listAddresses = container.resolve(ListAddressesService);
 
-    const products = await listAddresses.execute({
-    });
+    const products = await listAddresses.execute({});
 
     return res.json(classToClass(products));
   }

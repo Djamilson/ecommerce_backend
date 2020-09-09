@@ -14,7 +14,6 @@ describe('ShowProfile', () => {
 
   it('should be able to create a new user', async () => {
     const user = await fakeUsersRepository.create({
-      name: 'Djamisl ioo',
       email: 'djoo@bol.com.br',
       password: '1234477',
     });
@@ -23,8 +22,8 @@ describe('ShowProfile', () => {
       user_id: user.id,
     });
 
-    expect(profile.name).toBe('Djamisl ioo');
-    expect(profile.email).toBe('djoo@bol.com.br');
+    expect(profile.person.name).toBe('Djamisl ioo');
+    expect(profile.person.email).toBe('djoo@bol.com.br');
   });
 
   it('should not be able  show  the profile  from non-existing user', async () => {

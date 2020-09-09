@@ -6,6 +6,7 @@ import sectionsRouter from '@modules/products/infra/http/routes/sections.routes'
 import addressesRouter from '@modules/users/infra/http/routes/addresses.routes';
 import citiesRouter from '@modules/users/infra/http/routes/cities.routes';
 import groupsRouter from '@modules/users/infra/http/routes/groups.routes';
+import infoClientsRouter from '@modules/users/infra/http/routes/infoclients.routes';
 import passwordRouter from '@modules/users/infra/http/routes/password.routes';
 import phonesRouter from '@modules/users/infra/http/routes/phones.routes';
 import profileRouter from '@modules/users/infra/http/routes/profile.routes';
@@ -19,6 +20,7 @@ routes.use('/users', usersRouter);
 routes.use('/sessions', sessionsRouter);
 routes.use('/groups', groupsRouter);
 
+routes.use('/infoclients', infoClientsRouter);
 routes.use('/addresses', addressesRouter);
 routes.use('/phones', phonesRouter);
 

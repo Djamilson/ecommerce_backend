@@ -1,4 +1,4 @@
-import { getRepository, Repository, Not } from 'typeorm';
+import { getRepository, Repository } from 'typeorm';
 
 import ICreateUserDTO from '@modules/users/dtos/ICreateUserDTO';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
@@ -30,8 +30,7 @@ class UsersRepository implements IUsersRepository {
       where: { email },
     });
 
-    console.log('email, password ', email);
-     console.log('ppp', person);
+    console.log('ppp', person);
     let user;
 
     if (person) {
@@ -42,24 +41,6 @@ class UsersRepository implements IUsersRepository {
     }
 
     return user;
-  }
-
-  public async findAllProviders({
-    except_user_id,
-  }: IFindAllProvidersDTO): Promise<User[]> {
-    let users: User[];
-
-    if (except_user_id) {
-      users = await this.ormUserRepository.find({
-        where: {
-          id: Not(except_user_id),
-        },
-      });
-    } else {
-      users = await this.ormUserRepository.find();
-    }
-
-    return users;
   }
 
   public async create(user: ICreateUserDTO): Promise<User> {
