@@ -14,6 +14,7 @@ interface IRequest {
   rg: string;
   rgss: string;
   address_id: string;
+  phone_id_man: string;
 }
 
 @injectable()
@@ -33,6 +34,7 @@ class UpdatePersonService {
     rg,
     rgss,
     address_id,
+    phone_id_man,
   }: IRequest): Promise<Person> {
     const newBirdthDate = parse(birdthDate, 'dd/MM/yyyy', new Date());
 
@@ -47,6 +49,7 @@ class UpdatePersonService {
     user.person.rgss = rgss;
     user.person.birdth_date = newBirdthDate;
     user.person.address_id_man = address_id;
+    user.person.phone_id_man = phone_id_man;
 
     return this.personsRepository.save(user.person);
   }

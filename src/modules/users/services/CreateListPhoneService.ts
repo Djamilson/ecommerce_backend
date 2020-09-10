@@ -45,6 +45,7 @@ class CreatePhoneService {
       throw new AppError('Phone already used.');
     } */
     console.log('phones:::', phones);
+
     const phoneSerealizable = phones.map((phone: IPhone) => {
       return {
         ...phone,

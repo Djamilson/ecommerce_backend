@@ -21,13 +21,16 @@ export default class InfoPersonController {
         neighborhood,
         zip_code,
         city_id,
-        phoneItems,
+        phones,
       } = req.body;
 
       const createAddress = container.resolve(CreateAddressService);
       const updatePerson = container.resolve(UpdatePersonService);
       const createListPhone = container.resolve(CreateListPhoneService);
 
+      console.log('req.body:: ', req.body);
+
+      console.log('req.body:: ', req.body.phones);
       const { id: address_id } = await createAddress.execute({
         number,
         street,
@@ -37,13 +40,15 @@ export default class InfoPersonController {
         user_id,
         city_id,
       });
-      /*
-      const phone = await createListPhone.execute({
-        phones: phoneItems,
-        user_id,
-      }); */
 
-      // console.log('Meu phone::', phone[0]);
+      const phone = await createListPhone.execute({
+        phones,
+        user_id,
+      });
+
+      const phone_id_man = phone[0].id;
+
+      console.log('Meu phone::', phone[0].id);
       const person = await updatePerson.execute({
         user_id,
         cpf,
@@ -51,6 +56,7 @@ export default class InfoPersonController {
         rg,
         rgss,
         address_id,
+        phone_id_man,
       });
 
       return res.json(classToClass(person));
