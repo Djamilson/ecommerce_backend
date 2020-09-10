@@ -115,7 +115,6 @@ class CreateOrderService {
     });
 
     const total = serializadProducts.reduce((totalsum, item) => {
-      console.log('estou somando::', totalsum, item);
 
       return totalsum + item.price * item.quantity;
     }, 0);
