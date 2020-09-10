@@ -48,6 +48,10 @@ class PhonesRepository implements IPhonesRepository {
   public async save(phone: Phone): Promise<Phone> {
     return this.ormPhoneRepository.save(phone);
   }
+
+  public async createListPhone(phones: ICreatePhoneDTO[]): Promise<Phone[]> {
+    return this.ormPhoneRepository.save(phones);
+  }
 }
 
 export default PhonesRepository;

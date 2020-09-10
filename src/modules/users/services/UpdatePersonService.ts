@@ -1,10 +1,9 @@
-import { format, parseISO, parse } from 'date-fns';
+import { parse } from 'date-fns';
 import { inject, injectable } from 'tsyringe';
 
 import AppError from '@shared/errors/AppError';
 
 import Person from '../infra/typeorm/entities/Person';
-import User from '../infra/typeorm/entities/User';
 import IPersonsRepository from '../repositories/IPersonsRepository';
 import IUsersRepository from '../repositories/IUsersRepository';
 
@@ -14,6 +13,7 @@ interface IRequest {
   birdthDate: string;
   rg: string;
   rgss: string;
+  address_id: string;
 }
 
 @injectable()
@@ -32,6 +32,7 @@ class UpdatePersonService {
     birdthDate,
     rg,
     rgss,
+    address_id,
   }: IRequest): Promise<Person> {
     const newBirdthDate = parse(birdthDate, 'dd/MM/yyyy', new Date());
 
@@ -45,6 +46,7 @@ class UpdatePersonService {
     user.person.rg = rg;
     user.person.rgss = rgss;
     user.person.birdth_date = newBirdthDate;
+    user.person.address_id_man = address_id;
 
     return this.personsRepository.save(user.person);
   }

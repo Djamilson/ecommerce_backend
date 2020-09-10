@@ -13,6 +13,7 @@ export default interface IProductsRepository {
   findAll(paginationDTO: IPaginationsDTO): Promise<Product[]>;
   findByName(name: string): Promise<Product | undefined>;
   updateQuantity(products: IUpdateProductsQuantityDTO[]): Promise<Product[]>;
+
   create(data: ICreateProductDTO): Promise<Product>;
   save(product: Product): Promise<Product>;
 }
