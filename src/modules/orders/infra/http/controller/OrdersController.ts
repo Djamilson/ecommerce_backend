@@ -19,17 +19,19 @@ export default class OrdersController {
     // const { user_id, products } = request.body;
 
     const user_id = request.user.id;
-    const { products } = request.body;
+    const { products, fee, card_hash, installments } = request.body;
 
     console.log('iuser_id', user_id);
     const createOrder = container.resolve(CreateOrderService);
 
     const customer = await createOrder.execute({
       user_id,
+      fee,
       products,
+      card_hash,
+      installments,
     });
 
-    
     return response.json(customer);
   }
 }

@@ -29,6 +29,9 @@ class Order {
   @Column('decimal')
   total: number;
 
+  @Column('decimal')
+  fee: number;
+
   @CreateDateColumn()
   created_at: Date;
 

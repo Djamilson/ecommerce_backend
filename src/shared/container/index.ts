@@ -14,6 +14,7 @@ import ISectionsRepository from '@modules/products/repositories/ISectionsReposit
 import AddressesRepository from '@modules/users/infra/typeorm/repositories/AddressesRepository';
 import CitiesRepository from '@modules/users/infra/typeorm/repositories/CitiesRepository';
 import GroupsRepository from '@modules/users/infra/typeorm/repositories/GroupsRepository';
+import PersonsRepository from '@modules/users/infra/typeorm/repositories/PersonsRepository';
 import PhonesRepository from '@modules/users/infra/typeorm/repositories/PhonesRepository';
 import StatesRepository from '@modules/users/infra/typeorm/repositories/StatesRepository';
 import UsersGroupsRepository from '@modules/users/infra/typeorm/repositories/UsersGroupsRepository';
@@ -22,14 +23,12 @@ import UserTokensRepository from '@modules/users/infra/typeorm/repositories/User
 import IAddressesRepository from '@modules/users/repositories/IAddressesRepository';
 import ICitiesRepository from '@modules/users/repositories/ICitiesRepository';
 import IGroupsRepository from '@modules/users/repositories/IGroupsRepository';
+import IPersonsRepository from '@modules/users/repositories/IPersonsRepository';
 import IPhonesRepository from '@modules/users/repositories/IPhonesRepository';
 import IStatesRepository from '@modules/users/repositories/IStatesRepository';
 import IUsersGroupsRepository from '@modules/users/repositories/IUsersGroupsRepository';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import IUserTokensRepository from '@modules/users/repositories/IUserTokensRepository';
-
-import PersonsRepository from '@modules/users/infra/typeorm/repositories/PersonsRepository';
-import IPersonsRepository from '@modules/users/repositories/IUsersRepository';
 
 container.registerSingleton<IUsersRepository>(
   'UsersRepository',
@@ -41,11 +40,10 @@ container.registerSingleton<IAddressesRepository>(
   AddressesRepository,
 );
 
-container.registerSingleton<IPersonRepository>(
+container.registerSingleton<IPersonsRepository>(
   'PersonsRepository',
   PersonsRepository,
 );
-
 
 container.registerSingleton<IStatesRepository>(
   'StatesRepository',

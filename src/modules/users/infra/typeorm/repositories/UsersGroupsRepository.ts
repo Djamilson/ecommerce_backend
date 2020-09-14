@@ -12,7 +12,7 @@ class UsersGroupsRepository implements IUsersGroupsRepository {
   }
 
   public async findById(id: string): Promise<User | undefined> {
-    const user = this.ormRepository.findOne(id, {
+    const user = await this.ormRepository.findOne(id, {
       relations: ['users_groups', 'user'],
     });
 
