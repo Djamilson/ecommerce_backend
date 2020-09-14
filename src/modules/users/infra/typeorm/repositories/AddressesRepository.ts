@@ -24,7 +24,7 @@ class AddressesRepository implements IAddressesRepository {
   }
 
   public async findById(id: string): Promise<Address | undefined> {
-    const address = this.ormAddressRepository.findOne(id, {
+    const address = await this.ormAddressRepository.findOne(id, {
       relations: ['city'],
     });
 
@@ -42,7 +42,7 @@ class AddressesRepository implements IAddressesRepository {
   }
 
   public async create(address: ICreateAddressDTO): Promise<Address> {
-    const newAddress = this.ormAddressRepository.create(address);
+    const newAddress = await this.ormAddressRepository.create(address);
 
     await this.ormAddressRepository.save(newAddress);
 

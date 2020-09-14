@@ -1,8 +1,6 @@
 import { Router } from 'express';
 
 import ordersRouter from '@modules/orders/infra/http/routes/orders.routes';
-import cardsRouter from '@modules/payments/infra/http/routes/cards.routes';
-import checkoutsRouter from '@modules/payments/infra/http/routes/checkouts.routes';
 import productsRouter from '@modules/products/infra/http/routes/products.routes';
 import sectionsRouter from '@modules/products/infra/http/routes/sections.routes';
 import addressesRouter from '@modules/users/infra/http/routes/addresses.routes';
@@ -35,8 +33,5 @@ routes.use('/orders', ordersRouter);
 
 routes.use('/cities', citiesRouter);
 routes.use('/states', statesRouter);
-
-routes.use('/cards', cardsRouter);
-routes.use('/checkouts', checkoutsRouter);
 
 export default routes;

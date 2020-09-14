@@ -4,6 +4,7 @@ import pagarme from 'pagarme';
 import { container } from 'tsyringe';
 import { Transaction } from 'typeorm';
 
+import CreateCheckoutService from '@modules/payments/services/CreateCheckoutService';
 import ListCardsService from '@modules/payments/services/ListCardsService';
 
 export default class CheckoutsController {
@@ -19,7 +20,6 @@ export default class CheckoutsController {
     } = req.body;
 
     try {
-
       const client = await pagarme.client.connect({
         api_key: process.env.PAGARME_API_KEY,
       });
@@ -75,10 +75,18 @@ export default class CheckoutsController {
 
       console.log('pagarmeTransaction::', pagarmeTransaction);
 
-      /* const checkout = await Checkout.create({
-        amount: parseInt(String(amount * 100), 10),
+      const createCheckout = container.resolve(CreateCheckoutService);
+      // dependencia
+
+      const checkout = await createCheckout.execute({
+        amount,
         fee,
+        products: items,
       });
+
+      console.log(checkout);
+
+      /*
       // adicionando os produtos ao checkout
       await checkout.products().attach(
         items.map((item: any) => item.id),
