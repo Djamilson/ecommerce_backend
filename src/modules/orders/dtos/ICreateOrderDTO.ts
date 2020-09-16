@@ -11,4 +11,5 @@ export default interface ICreateOrderDTO {
   user: User;
   products: IProduct[];
   total: number;
+  fee: number;
 }

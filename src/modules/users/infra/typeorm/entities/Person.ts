@@ -5,9 +5,14 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  JoinColumn,
+  OneToOne,
 } from 'typeorm';
 
 import uploadConfig from '@config/upload';
+
+import Address from './Address';
+import Phone from './Phone';
 
 @Entity('persons')
 class Person {
@@ -41,8 +46,16 @@ class Person {
   @Column()
   avatar: string;
 
+  @OneToOne(() => Address)
+  @JoinColumn({ name: 'address_id_man' })
+  address: Address;
+
   @Column()
   address_id_man: string;
+
+  @OneToOne(() => Phone)
+  @JoinColumn({ name: 'phone_id_man' })
+  phone: Phone;
 
   @Column()
   phone_id_man: string;

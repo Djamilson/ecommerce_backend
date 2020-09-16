@@ -7,6 +7,8 @@ import NotificationsRepository from '@modules/notifications/infra/typeorm/reposi
 import INotificationsRepository from '@modules/notifications/repositories/INotificationsRepository';
 import OrdersRepository from '@modules/orders/infra/typeorm/repositories/OrdersRepository';
 import IOrdersRepository from '@modules/orders/repositories/IOrdersRepository';
+import TransactionsRepository from '@modules/payments/infra/typeorm/repositories/TransactionsRepository';
+import ITransactionsRepository from '@modules/payments/repositories/ITransactionsRepository';
 import ProductsRepository from '@modules/products/infra/typeorm/repositories/ProductsRepository';
 import SectionsRepository from '@modules/products/infra/typeorm/repositories/SectionsRepository';
 import IProductsRepository from '@modules/products/repositories/IProductsRepository';
@@ -33,6 +35,11 @@ import IUserTokensRepository from '@modules/users/repositories/IUserTokensReposi
 container.registerSingleton<IUsersRepository>(
   'UsersRepository',
   UsersRepository,
+);
+
+container.registerSingleton<ITransactionsRepository>(
+  'TransactionsRepository',
+  TransactionsRepository,
 );
 
 container.registerSingleton<IAddressesRepository>(
