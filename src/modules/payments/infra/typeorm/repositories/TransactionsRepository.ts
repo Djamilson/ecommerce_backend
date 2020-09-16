@@ -23,7 +23,8 @@ class TransactionsRepository implements ITransactionsRepository {
   public async create(
     transaction: ICreateTransactionDTO,
   ): Promise<Transaction> {
-    const newTransaction = await this.ormRepository.create(transaction);
+    console.log('Salvando a transaction:', transaction);
+    const newTransaction = this.ormRepository.create(transaction);
 
     await this.ormRepository.save(newTransaction);
 

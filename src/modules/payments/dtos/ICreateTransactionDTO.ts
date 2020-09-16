@@ -6,4 +6,5 @@ export default interface ICreateTransactionDTO {
   authorized_amount: number;
   tid: string;
   installments: string;
+  order_id: string;
 }

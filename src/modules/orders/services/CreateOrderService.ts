@@ -104,9 +104,6 @@ class CreateOrderService {
       throw new AppError('There not find any user with the givan id');
     }
 
-    // console.log('iuser_id Estou no service:', products);
-    // const newProducts = products.map(item => item.itemProduct);
-
     const existentProducts = await this.productsRepository.findAllById(
       products,
     );
@@ -127,14 +124,13 @@ class CreateOrderService {
       );
     }
 
-    console.log('Init::: 1112');
-    // /Dor de cabeça tenho que testar
-    const findProductsWithNoQuantity = products.filter(
-      item =>
+    const findProductsWithNoQuantity = products.filter(item => {
+      return (
         existentProducts.filter(p => p.id === item.itemProduct.product.id)[0]
-          .stock < item.itemProduct.product.stock,
-    );
-    console.log('Init::: 2', findProductsWithNoQuantity);
+          .stock < item.itemProduct.stock
+      );
+    });
+
     if (findProductsWithNoQuantity.length) {
       throw new AppError(
         `The quantity ${findProductsWithNoQuantity[0].itemProduct.product.stock}
@@ -143,7 +139,6 @@ class CreateOrderService {
       );
     }
 
-    console.log('Init::: 99', existentProducts);
     const serializadProducts = products.map(order_product => {
       const oldPrice = existentProducts.filter(
         p => p.id === order_product.itemProduct.product.id,
@@ -162,26 +157,21 @@ class CreateOrderService {
       return totalsum + item.price * item.quantity;
     }, 0);
 
-    console.log('Init:::', existentProducts);
+    console.log('Init pagarme');
     const client = await pagarme.client.connect({
       api_key: process.env.PAGARME_API_KEY,
     });
 
     // busca phone and address
-    console.log('address, phone:::', userExists.person.phone_id_man);
 
     const phone = await this.phonesRepository.findById(
       userExists.person.phone_id_man,
     );
 
-    console.log('phone:::>>>', phone);
-
     const newPhone = `${phone?.prefix}${phone?.number}`.replace(
       /([^0-9])/g,
       '',
     );
-
-    console.log('newPhone:::Porarra>>>', newPhone);
 
     const address = await this.addressesRepository.findById(
       userExists.person.address_id_man,
@@ -255,7 +245,7 @@ class CreateOrderService {
     });
     console.log('newOrder', newOrder);
 
-    const { order_products } = newOrder;
+    const { id: order_id, order_products } = newOrder;
 
     const orderedProductsQuantity = order_products.map(product => ({
       id: product.product_id,
@@ -281,12 +271,9 @@ class CreateOrderService {
       },
     );
 
-    console.log('PPPPP>>> ');
     const myProducts = await this.productsRepository.findAllById(
       order_productIds,
     );
-
-    console.log('PPPPP>>> ', myProducts);
 
     const products_to_names = order_products.map(ordersProducts => {
       return {
@@ -300,15 +287,16 @@ class CreateOrderService {
     });
 
     const {
-      transaction_id,
+      id: transaction_id,
       status,
       authorization_code,
-      brand,
+      card_brand: brand,
       authorized_amount,
       tid,
     } = pagarmeTransaction;
+
     console.log(
-      'PPPPP>>> ',
+      'Finalizando Transatc>>> ',
       transaction_id,
       status,
       authorization_code,
@@ -316,17 +304,21 @@ class CreateOrderService {
       authorized_amount,
       tid,
     );
+
+    console.log('Finalizando Transatc>>> ', pagarmeTransaction);
+
     const newTransaction = await this.transactionsRepository.create({
       transaction_id,
       status,
       authorization_code,
-      brand,
       authorized_amount,
+      brand,
       tid,
       installments,
+      order_id,
     });
 
-    console.log(newTransaction);
+    console.log('passou da create Transaction: ', newTransaction);
 
     const order = {
       user: {
