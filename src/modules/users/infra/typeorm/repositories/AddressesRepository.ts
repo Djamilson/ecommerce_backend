@@ -24,7 +24,6 @@ class AddressesRepository implements IAddressesRepository {
   }
 
   public async findById(id: string): Promise<Address | undefined> {
-    console.log('my address: ', id);
     const address = await this.ormAddressRepository.findOne(id, {
       relations: ['city', 'city.state'],
     });

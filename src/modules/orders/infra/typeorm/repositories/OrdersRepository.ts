@@ -18,15 +18,12 @@ class OrdersRepository implements IOrdersRepository {
     total,
     fee,
   }: ICreateOrderDTO): Promise<Order> {
-    console.log('Dentro::: ', user, products, total);
     const order = this.ormRepository.create({
       user,
       order_products: products,
       total,
       fee,
     });
-
-    console.log('Passou::: 1', order);
 
     await this.ormRepository.save(order);
 
