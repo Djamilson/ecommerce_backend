@@ -7,10 +7,16 @@ import IProductsRepository from '@modules/products/repositories/IProductsReposit
 
 import Product from '../entities/Product';
 
-interface IFindProducts {
-  id: string;
+interface IProduct {
+  itemProduct: {
+    stock: number;
+    product: {
+      id: string;
+      name: string;
+      price: number;
+    };
+  };
 }
-
 class ProductsRepository implements IProductsRepository {
   private ormRepository: Repository<Product>;
 
@@ -18,8 +24,8 @@ class ProductsRepository implements IProductsRepository {
     this.ormRepository = getRepository(Product);
   }
 
-  public async findAllById(products: IFindProducts[]): Promise<Product[]> {
-    const productIds = products.map(product => product.id);
+  public async findAllById(products: IProduct[]): Promise<Product[]> {
+    const productIds = products.map(item => item.itemProduct.product.id);
 
     const existsProducts = await this.ormRepository.find({
       where: {

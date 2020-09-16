@@ -21,9 +21,9 @@ export default class OrdersController {
     const user_id = request.user.id;
     const { products, fee, card_hash, installments } = request.body;
 
-    console.log('iuser_id', user_id);
     const createOrder = container.resolve(CreateOrderService);
-
+    console.log('estou no controller: ', products[0]);
+    console.log('products', products);
     const customer = await createOrder.execute({
       user_id,
       fee,
@@ -32,6 +32,7 @@ export default class OrdersController {
       installments,
     });
 
+    console.log('passou:::: final', customer);
     return response.json(customer);
   }
 }

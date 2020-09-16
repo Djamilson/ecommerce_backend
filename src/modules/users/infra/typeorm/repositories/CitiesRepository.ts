@@ -14,12 +14,10 @@ class CitiesRepository implements ICitiesRepository {
   public async findByCitiesToStateId(
     state_id: string,
   ): Promise<City[] | undefined> {
-    console.log('listCities', state_id);
     const listCities = await this.ormRepository.find({
       where: { state_id },
     });
 
-    console.log('listCities', listCities);
     return listCities;
   }
 }

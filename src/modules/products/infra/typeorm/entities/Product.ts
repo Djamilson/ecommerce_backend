@@ -7,7 +7,10 @@ import {
   UpdateDateColumn,
   ManyToOne,
   JoinColumn,
+  OneToMany,
 } from 'typeorm';
+
+import OrdersProducts from '@modules/orders/infra/typeorm/entities/OrdersProducts';
 
 import uploadConfig from '@config/upload';
 
@@ -23,6 +26,9 @@ class Product {
 
   @Column('decimal')
   price: number;
+
+  @OneToMany(() => OrdersProducts, order_products => order_products.product)
+  order_products: OrdersProducts[];
 
   @ManyToOne(() => Section)
   @JoinColumn({ name: 'section_id' })

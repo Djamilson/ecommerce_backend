@@ -15,7 +15,7 @@ class Transaction {
   transaction_id: string;
 
   @Column()
-  checkout_id: string;
+  order_id: string;
 
   @Column()
   status: string;

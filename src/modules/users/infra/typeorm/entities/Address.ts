@@ -4,7 +4,11 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToOne,
+  JoinColumn,
 } from 'typeorm';
+
+import City from './City';
 
 @Entity('addresses')
 class Address {
@@ -28,6 +32,10 @@ class Address {
 
   @Column()
   person_id: string;
+
+  @OneToOne(() => City)
+  @JoinColumn({ name: 'city_id' })
+  city: City;
 
   @Column()
   city_id: string;
