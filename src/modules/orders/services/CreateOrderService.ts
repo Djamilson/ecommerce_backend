@@ -1,9 +1,7 @@
-import { format } from 'date-fns';
-// import pagarme from 'pagarme';
 import { inject, injectable, container } from 'tsyringe';
 
 import ITransactionsRepository from '@modules/payments/repositories/ITransactionsRepository';
-import CreatePagarmeService from '@modules/payments/services/CreatePagarmeService';
+import CreatePagarmeCardService from '@modules/payments/services/CreatePagarmeCardService';
 import Product from '@modules/products/infra/typeorm/entities/Product';
 import IProductsRepository from '@modules/products/repositories/IProductsRepository';
 import IAddressesRepository from '@modules/users/repositories/IAddressesRepository';
@@ -99,7 +97,7 @@ class CreateOrderService {
     card_hash,
     installments,
   }: IRequest): Promise<IOrder> {
-    const createPagarme = container.resolve(CreatePagarmeService);
+    const createPagarmeCard = container.resolve(CreatePagarmeCardService);
 
     const userExists = await this.usersRepository.findById(user_id);
 
@@ -180,7 +178,7 @@ class CreateOrderService {
       authorized_amount,
       brand,
       tid,
-    } = await createPagarme.execute({
+    } = await createPagarmeCard.execute({
       fee,
       card_hash,
       userExists,
@@ -240,7 +238,7 @@ class CreateOrderService {
       };
     });
 
-    const newTransaction = await this.transactionsRepository.create({
+    await this.transactionsRepository.create({
       transaction_id,
       status,
       authorization_code,

@@ -2,7 +2,6 @@ import { format } from 'date-fns';
 import pagarme from 'pagarme';
 import { injectable } from 'tsyringe';
 
-import Product from '@modules/products/infra/typeorm/entities/Product';
 import Address from '@modules/users/infra/typeorm/entities/Address';
 
 interface IProduct {
@@ -45,7 +44,7 @@ interface IPagarme {
 }
 
 @injectable()
-class CreatePagarmeService {
+class CreatePagarmeCardService {
   constructor() {}
 
   public async execute({
@@ -57,7 +56,6 @@ class CreatePagarmeService {
     serializadProducts,
     total,
   }: IRequest): Promise<IPagarme> {
-
     const client = await pagarme.client.connect({
       api_key: process.env.PAGARME_API_KEY,
     });
@@ -141,4 +139,4 @@ class CreatePagarmeService {
   }
 }
 
-export default CreatePagarmeService;
+export default CreatePagarmeCardService;
