@@ -32,10 +32,29 @@ class OrdersRepository implements IOrdersRepository {
 
   public async findById(id: string): Promise<Order | undefined> {
     const order = this.ormRepository.findOne(id, {
-      relations: ['order_products', 'user', 'user.person'],
+      relations: [
+        'order_products',
+        'user',
+        'user.person',
+        'order_products.product',
+      ],
     });
 
     return order;
+  }
+
+  public async findAllOrdersToUserId(user_id: string): Promise<Order[]> {
+    const orders = this.ormRepository.find({
+      where: { user_id },
+      relations: [
+        'order_products',
+        'user',
+        'user.person',
+        'order_products.product',
+      ],
+    });
+
+    return orders;
   }
 }
 
