@@ -1,7 +1,9 @@
+import { classToClass } from 'class-transformer';
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
 import CreateOrderService from '@modules/orders/services/CreateOrderService';
+import FinAllOrderToUserIdService from '@modules/orders/services/FindAllOrderToUserIdService';
 import FindOrderService from '@modules/orders/services/FindOrderService';
 
 export default class OrdersController {
@@ -13,6 +15,18 @@ export default class OrdersController {
     const order = await findOrder.execute({ id });
 
     return response.json(order);
+  }
+
+  public async index(request: Request, response: Response): Promise<Response> {
+    const user_id = request.user.id;
+
+    console.log('Init...');
+    const findOrders = container.resolve(FinAllOrderToUserIdService);
+
+    const orders = await findOrders.execute({ user_id });
+
+    console.log('Finally...');
+    return response.json(classToClass(orders));
   }
 
   public async create(request: Request, response: Response): Promise<Response> {

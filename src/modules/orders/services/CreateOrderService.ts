@@ -1,8 +1,7 @@
-import { format } from 'date-fns';
-import pagarme from 'pagarme';
-import { inject, injectable } from 'tsyringe';
+import { inject, injectable, container } from 'tsyringe';
 
 import ITransactionsRepository from '@modules/payments/repositories/ITransactionsRepository';
+import CreatePagarmeCardService from '@modules/payments/services/CreatePagarmeCardService';
 import Product from '@modules/products/infra/typeorm/entities/Product';
 import IProductsRepository from '@modules/products/repositories/IProductsRepository';
 import IAddressesRepository from '@modules/users/repositories/IAddressesRepository';
@@ -98,6 +97,8 @@ class CreateOrderService {
     card_hash,
     installments,
   }: IRequest): Promise<IOrder> {
+    const createPagarmeCard = container.resolve(CreatePagarmeCardService);
+
     const userExists = await this.usersRepository.findById(user_id);
 
     if (!userExists) {
@@ -157,13 +158,6 @@ class CreateOrderService {
       return totalsum + item.price * item.quantity;
     }, 0);
 
-    console.log('Init pagarme');
-    const client = await pagarme.client.connect({
-      api_key: process.env.PAGARME_API_KEY,
-    });
-
-    // busca phone and address
-
     const phone = await this.phonesRepository.findById(
       userExists.person.phone_id_man,
     );
@@ -177,64 +171,23 @@ class CreateOrderService {
       userExists.person.address_id_man,
     );
 
-    const pagarmeTransaction = await client.transactions.create({
-      api_key: process.env.PAGARME_API_KEY,
-      capture: 'false',
-      amount: 21000,
+    const {
+      transaction_id,
+      status,
+      authorization_code,
+      authorized_amount,
+      brand,
+      tid,
+    } = await createPagarmeCard.execute({
+      fee,
       card_hash,
-      customer: {
-        external_id: userExists.id,
-        name: userExists.person.name,
-        email: userExists.person.email,
-        type: 'individual',
-        country: 'br',
-
-        documents: [
-          {
-            type: 'cpf',
-            number: userExists.person.cpf,
-          },
-          {
-            type: 'rg',
-            number: userExists.person.rg,
-          },
-        ],
-        phone_numbers: [`+55${newPhone}`],
-        birthday: format(userExists.person.birdth_date, 'yyyy-MM-dd'),
-      },
-      billing: {
-        name: userExists.person.name,
-        address: {
-          country: 'br',
-          state: address?.city.state.name,
-          city: address?.city.name,
-          neighborhood: address?.neighborhood,
-          street: address?.street,
-          street_number: `${address?.number}`.replace(/([^0-9])/g, ''),
-          zipcode: `${address?.zip_code}`.replace(/([^0-9])/g, ''),
-        },
-      },
-      shipping: {
-        name: userExists.person.name,
-        fee,
-        expedited: true,
-        address: {
-          country: 'br',
-          state: address?.city.state.name,
-          city: address?.city.name,
-          neighborhood: address?.neighborhood,
-          street: address?.street,
-          street_number: `${address?.number}`.replace(/([^0-9])/g, ''),
-          zipcode: `${address?.zip_code}`.replace(/([^0-9])/g, ''),
-        },
-      },
-      items: serializadProducts.map((item: any) => ({
-        id: String(item.product_id),
-        title: item.name,
-        unit_price: parseInt(String(item.price * 100), 10),
-        quantity: item.quantity,
-        tangible: true,
-      })),
+      userExists,
+      newPhone,
+      address,
+      serializadProducts,
+      user_id,
+      installments,
+      total: total + fee,
     });
 
     const newOrder = await this.ordersRepository.create({
@@ -243,7 +196,6 @@ class CreateOrderService {
       total: total + fee,
       fee,
     });
-    console.log('newOrder', newOrder);
 
     const { id: order_id, order_products } = newOrder;
 
@@ -286,28 +238,7 @@ class CreateOrderService {
       };
     });
 
-    const {
-      id: transaction_id,
-      status,
-      authorization_code,
-      card_brand: brand,
-      authorized_amount,
-      tid,
-    } = pagarmeTransaction;
-
-    console.log(
-      'Finalizando Transatc>>> ',
-      transaction_id,
-      status,
-      authorization_code,
-      brand,
-      authorized_amount,
-      tid,
-    );
-
-    console.log('Finalizando Transatc>>> ', pagarmeTransaction);
-
-    const newTransaction = await this.transactionsRepository.create({
+    await this.transactionsRepository.create({
       transaction_id,
       status,
       authorization_code,
@@ -317,8 +248,6 @@ class CreateOrderService {
       installments,
       order_id,
     });
-
-    console.log('passou da create Transaction: ', newTransaction);
 
     const order = {
       user: {
