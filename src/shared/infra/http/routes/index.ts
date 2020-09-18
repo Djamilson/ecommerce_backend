@@ -1,6 +1,7 @@
 import { Router } from 'express';
 
 import ordersRouter from '@modules/orders/infra/http/routes/orders.routes';
+import transactionsRouter from '@modules/payments/infra/http/routes/transactions.routes';
 import productsRouter from '@modules/products/infra/http/routes/products.routes';
 import sectionsRouter from '@modules/products/infra/http/routes/sections.routes';
 import addressesRouter from '@modules/users/infra/http/routes/addresses.routes';
@@ -30,6 +31,7 @@ routes.use('/profile', profileRouter);
 routes.use('/sections', sectionsRouter);
 routes.use('/products', productsRouter);
 routes.use('/orders', ordersRouter);
+routes.use('/transactions', transactionsRouter);
 
 routes.use('/cities', citiesRouter);
 routes.use('/states', statesRouter);
