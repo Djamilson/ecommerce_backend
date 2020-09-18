@@ -4,7 +4,11 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToOne,
+  JoinColumn,
 } from 'typeorm';
+
+import Order from '@modules/orders/infra/typeorm/entities/Order';
 
 @Entity('transactions')
 class Transaction {
@@ -13,6 +17,10 @@ class Transaction {
 
   @Column()
   transaction_id: string;
+
+  @OneToOne(() => Order)
+  @JoinColumn({ name: 'order_id' })
+  order: Order;
 
   @Column()
   order_id: string;

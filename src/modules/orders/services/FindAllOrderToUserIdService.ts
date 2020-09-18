@@ -15,9 +15,7 @@ class FindAllOrderToUserIdService {
   ) {}
 
   public async execute({ user_id }: IRequest): Promise<Order[] | undefined> {
-    console.log('FindAllOrderToUserIdService ...');
     const orders = await this.ordersRepository.findAllOrdersToUserId(user_id);
-    console.log('Finally FindAllOrderToUserIdService ...');
 
     return orders;
   }

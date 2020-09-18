@@ -20,6 +20,16 @@ class TransactionsRepository implements ITransactionsRepository {
     return transaction;
   }
 
+  public async findByOrderId(
+    order_id: string,
+  ): Promise<Transaction | undefined> {
+    const transaction = await this.ormRepository.findOne({
+      where: { order_id },
+    });
+
+    return transaction;
+  }
+
   public async create(
     transaction: ICreateTransactionDTO,
   ): Promise<Transaction> {
