@@ -25,7 +25,8 @@ class ListProductsService {
 
     // const totalCount = await this.productsRepository.count();
     const products = await this.productsRepository.findAll(paginationDTO);
-
+    console.log('products: ', products);
+    
     return {
       totalCount: 0,
       page: paginationDTO.page,

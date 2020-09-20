@@ -30,6 +30,11 @@ class OrdersRepository implements IOrdersRepository {
     return order;
   }
 
+  public async save(order: Order): Promise<Order> {
+    console.log('Vou alterar a Order :::', order);
+    return this.ormRepository.save(order);
+  }
+
   public async findById(id: string): Promise<Order | undefined> {
     const order = this.ormRepository.findOne(id, {
       relations: [
@@ -46,6 +51,7 @@ class OrdersRepository implements IOrdersRepository {
   public async findAllOrdersToUserId(user_id: string): Promise<Order[]> {
     const orders = this.ormRepository.find({
       where: { user_id },
+      order: { created_at: 'DESC' },
       relations: [
         'order_products',
         'user',

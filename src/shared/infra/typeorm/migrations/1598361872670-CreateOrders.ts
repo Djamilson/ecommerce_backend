@@ -26,6 +26,11 @@ export default class CreateOrders1598361872670 implements MigrationInterface {
             scale: 2,
           },
           {
+            name: 'canceled_at',
+            type: 'timestamp',
+            isNullable: true,
+          },
+          {
             name: 'created_at',
             type: 'timestamp',
             default: 'now()',

@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
+import CancelTransactionService from '@modules/payments/services/CancelTransactionService';
 import FindTransactionService from '@modules/payments/services/FindTransactionService';
 
 export default class TransactionsController {
@@ -9,9 +10,25 @@ export default class TransactionsController {
 
     const findTransaction = container.resolve(FindTransactionService);
 
-    const transaction = await findTransaction.execute({ order_id });
+    const transaction = await findTransaction.execute({
+      order_id,
+    });
 
-    console.log('MMMM>>', transaction);
+    return response.json(transaction);
+  }
+
+  public async destroy(
+    request: Request,
+    response: Response,
+  ): Promise<Response> {
+    const { id } = request.params;
+
+    console.log('id: ', id);
+
+    const cancelTransaction = container.resolve(CancelTransactionService);
+
+    const transaction = await cancelTransaction.execute({ id });
+
     return response.json(transaction);
   }
 }

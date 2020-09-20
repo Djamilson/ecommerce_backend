@@ -1,6 +1,9 @@
 import { inject, injectable } from 'tsyringe';
 
+import AppError from '@shared/errors/AppError';
+
 import IAddressesRepository from '../repositories/IAddressesRepository';
+import IUsersRepository from '../repositories/IUsersRepository';
 
 interface IState {
   id: string;
@@ -13,55 +16,39 @@ interface ICity {
   state: IState;
 }
 
-interface IPhone {
-  id: string;
-  prefix: string;
-  number: string;
-}
-
-interface IPerson {
-  id: string;
-  name: string;
-  email: string;
-  status: string;
-  privacy: string;
-  avatar: string;
-  address_id_man: string;
-  phone: IPhone;
-  cpf: string;
-  rg: string;
-  rgss: string;
-  birdth_date: Date;
-}
-
 export interface IAddress {
-  person: IPerson;
   id: string;
   number: number;
   street: string;
   complement: string;
   zip_code: string;
   neighborhood: string;
-  user_id: string;
+  person_id: string;
   city: ICity;
 }
 
 @injectable()
 class ListAddressesService {
   constructor(
+    @inject('UsersRepository')
+    private usersRepository: IUsersRepository,
+
     @inject('AddressesRepository')
     private addressesRepository: IAddressesRepository,
   ) {}
 
-  public async execute(person_id: string): Promise<IAddress[] | undefined> {
+  public async execute(user_id: string): Promise<IAddress[] | undefined> {
+    const userExists = await this.usersRepository.findById(user_id);
+
+    if (!userExists) {
+      throw new AppError('There not find any user with the givan id');
+    }
+
     const listAddresses = await this.addressesRepository.findAllAddressesToPerson(
-      person_id,
+      userExists.person_id,
     );
 
-    console.log('Addresses:::', listAddresses);
-
-    // if (listAddresses?.length > 0) return listAddresses;
-    return undefined;
+    return listAddresses;
   }
 }
 

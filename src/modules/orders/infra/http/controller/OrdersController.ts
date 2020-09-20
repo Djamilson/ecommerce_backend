@@ -20,12 +20,10 @@ export default class OrdersController {
   public async index(request: Request, response: Response): Promise<Response> {
     const user_id = request.user.id;
 
-    console.log('Init...');
     const findOrders = container.resolve(FinAllOrderToUserIdService);
 
     const orders = await findOrders.execute({ user_id });
 
-    console.log('Finally...');
     return response.json(classToClass(orders));
   }
 
@@ -36,8 +34,7 @@ export default class OrdersController {
     const { products, fee, card_hash, installments } = request.body;
 
     const createOrder = container.resolve(CreateOrderService);
-    console.log('estou no controller: ', products[0]);
-    console.log('products', products);
+
     const customer = await createOrder.execute({
       user_id,
       fee,

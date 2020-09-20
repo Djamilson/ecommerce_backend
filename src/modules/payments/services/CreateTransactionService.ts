@@ -21,23 +21,6 @@ class CreateTransactionService {
     installments,
     order_id,
   }: ICreateTransactionDTO): Promise<Transaction> {
-    /* const sectionExists = await this.transactionsRepository.findByName(name);
-
-    if (sectionExists) {
-      throw new AppError('There is already one section with this name');
-    } */
-
-    console.log(
-      'CreateTransactionService:',
-      transaction_id,
-      status,
-      authorization_code,
-      brand,
-      authorized_amount,
-      tid,
-      installments,
-      order_id,
-    );
     const transaction = this.transactionsRepository.create({
       transaction_id,
       status,

@@ -37,7 +37,9 @@ class ProductsRepository implements IProductsRepository {
   }
 
   public async findAll(paginationDTO: IPaginationsDTO): Promise<Product[]> {
-    const keyword = 'a';
+    // /para a busca
+    const keyword = '';
+
     const products = await this.ormRepository.find({
       where: { name: Like(`%${keyword}%`) },
       order: { name: 'DESC' },

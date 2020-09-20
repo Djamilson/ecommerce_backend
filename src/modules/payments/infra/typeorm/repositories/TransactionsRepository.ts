@@ -13,9 +13,7 @@ class TransactionsRepository implements ITransactionsRepository {
   }
 
   public async findById(id: string): Promise<Transaction | undefined> {
-    const transaction = await this.ormRepository.findOne(id, {
-      relations: ['users_groups', 'user'],
-    });
+    const transaction = await this.ormRepository.findOne(id);
 
     return transaction;
   }
@@ -25,6 +23,7 @@ class TransactionsRepository implements ITransactionsRepository {
   ): Promise<Transaction | undefined> {
     const transaction = await this.ormRepository.findOne({
       where: { order_id },
+      relations: ['order'],
     });
 
     return transaction;
@@ -33,8 +32,15 @@ class TransactionsRepository implements ITransactionsRepository {
   public async create(
     transaction: ICreateTransactionDTO,
   ): Promise<Transaction> {
-    console.log('Salvando a transaction:', transaction);
     const newTransaction = this.ormRepository.create(transaction);
+
+    await this.ormRepository.save(newTransaction);
+
+    return newTransaction;
+  }
+
+  public async destroy(transaction_id: string): Promise<Transaction> {
+    const newTransaction = this.ormRepository.create({ transaction_id });
 
     await this.ormRepository.save(newTransaction);
 

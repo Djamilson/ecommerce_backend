@@ -30,7 +30,6 @@ export default class InfoPersonController {
 
       console.log('req.body:: ', req.body);
 
-      console.log('req.body:: ', req.body.phones);
       const { id: address_id } = await createAddress.execute({
         number,
         street,
@@ -41,6 +40,8 @@ export default class InfoPersonController {
         city_id,
       });
 
+      console.log('address_id::', address_id);
+
       const phone = await createListPhone.execute({
         phones,
         user_id,
@@ -49,6 +50,8 @@ export default class InfoPersonController {
       const phone_id_man = phone[0].id;
 
       console.log('Meu phone::', phone[0].id);
+      console.log('phone_id_man::', phone_id_man);
+
       const person = await updatePerson.execute({
         user_id,
         cpf,

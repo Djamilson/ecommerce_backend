@@ -131,7 +131,7 @@ class CreateOrderService {
           .stock < item.itemProduct.stock
       );
     });
-
+    console.log('Estou no service 2=>>>');
     if (findProductsWithNoQuantity.length) {
       throw new AppError(
         `The quantity ${findProductsWithNoQuantity[0].itemProduct.product.stock}
@@ -140,10 +140,14 @@ class CreateOrderService {
       );
     }
 
+    console.log('Estou no service 3=>>>List products', products);
+
     const serializadProducts = products.map(order_product => {
       const oldPrice = existentProducts.filter(
         p => p.id === order_product.itemProduct.product.id,
       )[0].price;
+
+      console.log('oldPrice=>>> ', oldPrice);
 
       return {
         name: order_product.itemProduct.product.name,
@@ -153,6 +157,7 @@ class CreateOrderService {
         price: oldPrice,
       };
     });
+    console.log('SerializadProducts =>>>', serializadProducts);
 
     const total = serializadProducts.reduce((totalsum, item) => {
       return totalsum + item.price * item.quantity;
@@ -190,6 +195,7 @@ class CreateOrderService {
       total: total + fee,
     });
 
+    console.log('Estou no service pagamento =>>>');
     const newOrder = await this.ordersRepository.create({
       user: userExists,
       products: serializadProducts,
@@ -197,6 +203,7 @@ class CreateOrderService {
       fee,
     });
 
+    console.log('Estou no service pagamento =>>> Find');
     const { id: order_id, order_products } = newOrder;
 
     const orderedProductsQuantity = order_products.map(product => ({

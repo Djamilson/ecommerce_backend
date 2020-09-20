@@ -46,6 +46,7 @@ export default class CreateTransactions1600100896925
             name: 'installments',
             type: 'varchar',
           },
+
           {
             name: 'created_at',
             type: 'timestamp',

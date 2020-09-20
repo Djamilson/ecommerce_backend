@@ -15,12 +15,12 @@ class AddressesRepository implements IAddressesRepository {
   public async findAllAddressesToPerson(
     person_id: string,
   ): Promise<Address[] | undefined> {
-    const address = this.ormAddressRepository.find({
+    const addresses = this.ormAddressRepository.find({
       where: { person_id },
-      relations: ['city'],
+      relations: ['city', 'city.state'],
     });
 
-    return address;
+    return addresses;
   }
 
   public async findById(id: string): Promise<Address | undefined> {

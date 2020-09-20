@@ -18,19 +18,22 @@ class UsersRepository implements IUsersRepository {
 
   public async findById(id: string): Promise<User | undefined> {
     const user = await this.ormUserRepository.findOne(id, {
-      relations: ['person', 'user_groups', 'user_groups.group'],
+      relations: [
+        'person',
+        'user_groups',
+        'user_groups.group',
+        'person.address',
+      ],
     });
 
     return user;
   }
 
   public async findByEmail(email: string): Promise<User | undefined> {
-    console.log('email, password ', email);
     const person = await this.ormPersonRepository.findOne({
       where: { email },
     });
 
-    console.log('ppp', person);
     let user;
 
     if (person) {
